@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Origin;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -29,6 +31,9 @@ class ProductFactory extends Factory
             'slug' => $this->faker->slug(),
             'description' => $this->faker->text(),
             'material' => $this->faker->name(),
+            'category_id'=>Category::first() ?? Category::factory(),
+            'origin_id'=>Origin::first() ?? Origin::factory()
+
         ];
     }
 }
