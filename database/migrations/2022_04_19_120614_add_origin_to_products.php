@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('colors', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            $table->foreignId('origin_id')->nullable()->constrained('origins')->nullonDelete();
         });
     }
 
@@ -26,6 +25,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('colors');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['origin_id']);
+            $table->dropColumn('origin_id');
+        });
     }
 };
