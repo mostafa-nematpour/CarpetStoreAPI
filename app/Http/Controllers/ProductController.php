@@ -30,6 +30,15 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
+        $product = $product->load([
+            'category'=> function ($query) {
+                $query->select('id', 'name', 'slug');
+            },
+            'origin'=> function ($query) {
+                $query->select('id', 'name', 'slug');
+            }
+        ]);
+    
         return $product;
     }
 }
