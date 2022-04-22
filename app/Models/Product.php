@@ -13,4 +13,12 @@ class Product extends Model
     {
         return 'slug';
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class)->select();
+    }
+    public function origin()
+    {
+        return $this->belongsTo(Origin::class);
+    }
 }
