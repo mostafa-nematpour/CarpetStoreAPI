@@ -16,11 +16,62 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $categories = [
-            'ورزشی' => [
-                'slug' => 'sport',
-                'icon' => 'fa fa-futbol-o'
+            'بختیاری' => [
+                'slug' => 'bakhtiari',
+                'icon' => 'icon-bakhtiari'
             ],
-           
+            'بلوچی' => [
+                'slug' => 'baluchi',
+                'icon' => 'icon-baluchi'
+            ],
+            'همدان' => [
+                'slug' => 'hamadan',
+                'icon' => 'icon-hamadan'
+            ],
+            'فرهان' => [
+                'slug' => 'farahan',
+                'icon' => 'icon-farahan'
+            ],
+            'اصفهان' => [
+                'slug' => 'isfahan',
+                'icon' => 'icon-isfahan'
+            ],
+            'کاشان' => [
+                'slug' => 'kashan',
+                'icon' => 'icon-kashan'
+            ],
+            'کرمان' => [
+                'slug' => 'kerman',
+                'icon' => 'icon-kerman'
+            ],
+            'ملایر' => [
+                'slug' => 'malayer',
+                'icon' => 'icon-malayer'
+            ],
+            'قم' => [
+                'slug' => 'qum',
+                'icon' => 'icon-qum'
+            ],
+            'سمنان' => [
+                'slug' => 'semnan',
+                'icon' => 'icon-semnan'
+            ],
+            'تبریز' => [
+                'slug' => 'tabriz',
+                'icon' => 'icon-tabriz'
+            ],
+            'تهران' => [
+                'slug' => 'tehran',
+                'icon' => 'icon-tehran'
+            ],
+            'ورامین' => [
+                'slug' => 'veramin',
+                'icon' => 'icon-veramin'
+            ],
+            'یزد' => [
+                'slug' => 'yazd',
+                'icon' => 'icon-yazd'
+            ],
         ];
         
         foreach ($categories as $categoryName =>$details) {
