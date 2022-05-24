@@ -1,3 +1,8 @@
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods  "*"
+Header always set Access-Control-Allow-Headers "Content-Type, x-requested-with, Authorization, Accept"
+
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
