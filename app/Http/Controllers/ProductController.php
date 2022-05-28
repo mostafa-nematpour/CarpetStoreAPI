@@ -81,7 +81,6 @@ class ProductController extends Controller
 
     public function destroy(Request $request)
     {
-        // dd($request->all());
         if (auth()->user() && auth()->user()->role_id == 1) {
 
             $validator = Validator::make($request->all(), [
@@ -96,12 +95,11 @@ class ProductController extends Controller
             }
 
 
-            if(Product::destroy($request->product_id)){
+            if (Product::destroy($request->product_id)) {
                 return response()->json([
                     'message' => 'success',
                 ], 200);
             }
-
         } else {
             return response()->json([
                 'message' => 'error',
