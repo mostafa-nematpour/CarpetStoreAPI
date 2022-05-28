@@ -79,10 +79,41 @@ class ProductController extends Controller
         return $product;
     }
 
+    public function destroy(Request $request)
+    {
+        // dd($request->all());
+        if (auth()->user() && auth()->user()->role_id == 1) {
+
+            $validator = Validator::make($request->all(), [
+                'product_id' => 'required|numeric|exists:products,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'error',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+
+            if(Product::destroy($request->product_id)){
+                return response()->json([
+                    'message' => 'success',
+                ], 200);
+            }
+
+        } else {
+            return response()->json([
+                'message' => 'error',
+                'errors' => 'Unauthorized',
+            ], 422);
+        }
+
+        return response()->json(['message' => 'error'], 500);
+    }
 
     public function insert(Request $request)
     {
-// dd($request->all());
         if (auth()->user() && auth()->user()->role_id == 1) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
@@ -91,7 +122,6 @@ class ProductController extends Controller
                 'number' => 'required|numeric',
                 'thumbnail' => 'required|string',
                 'slug' => 'required|string|unique:products,slug',
-                // 'slug' => ['required|string', Rule::unique('products')],
                 'description' => 'required|string',
                 'material' => 'required|string',
                 'category_id' => 'required|numeric',
@@ -117,7 +147,6 @@ class ProductController extends Controller
                 'material' => $request['material'],
                 'category_id' => $request['category_id'],
                 'origin_id' => $request['origin_id'],
-
             ]);
 
             if ($product) {
@@ -130,25 +159,14 @@ class ProductController extends Controller
                     'message' => 'error',
                 ], 500);
             }
-           
+        } else {
 
-        }else {
             return response()->json([
                 'message' => 'error',
-                'errors' => 'You are not admin',
+                'errors' => 'Unauthorized',
             ], 422);
-
         }
+
         return response()->json(['message' => 'error'], 404);
-
-
-
-        // $validator = Validator::make($request->all(), [
-
-        // ]);
-
-        // $product = Product::create($request->all());
-
-        // return response()->json($product);
     }
 }

@@ -28,7 +28,7 @@ Route::get('/product/{product}', [ProductController::class, 'show']);
 
 
 Route::post('/add-product', [ProductController::class, 'insert']);
-
+Route::post('/delete-product', [ProductController::class, 'destroy']);
 
 
 Route::group([
