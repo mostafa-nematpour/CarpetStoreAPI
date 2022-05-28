@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Validator;
 
 class ProductController extends Controller
 {
@@ -18,7 +19,9 @@ class ProductController extends Controller
             'origin' => function ($query) {
                 $query->select('id', 'name', 'slug');
             }
-        ])
+        ])->when($request->has('available') && $request->available == 'true', function ($query) {
+            $query->where('number', '>', 0);
+        })
             ->get([
                 'id', 'short_name', 'name', 'slug', 'price', 'description', 'discount', 'category_id', 'origin_id'
             ]);
@@ -46,11 +49,10 @@ class ProductController extends Controller
             }
         }
 
-        if ($request->has('available') && $request->available == 'true') {
-            // dd($products);
-            // $products = $products->where('number', '>', 0);
-            $products = $products->where('number', '!=', 0);
-        }
+        // if ($request->has('available') && $request->available == 'true') {
+        //     // dd($products);
+        //     // $products = $products->where('number', '!=', 0);
+        // }
 
 
         // $products = Product::select('short_name', 'name', 'slug', 'price', 'description', 'discount')->get();
@@ -77,5 +79,22 @@ class ProductController extends Controller
     }
 
 
+    public function insert(Request $request)
+    {
 
+        if (auth()->user() && auth()->user()->role_id == 1) {
+            // dd("");
+        }
+        return response()->json(['message' => 'Unauthorized'], 401);
+
+
+
+        // $validator = Validator::make($request->all(), [
+
+        // ]);
+
+        // $product = Product::create($request->all());
+
+        // return response()->json($product);
+    }
 }

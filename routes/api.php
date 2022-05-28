@@ -27,6 +27,10 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/product/{product}', [ProductController::class, 'show']);
 
 
+Route::post('/add-product', [ProductController::class, 'insert']);
+
+
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
