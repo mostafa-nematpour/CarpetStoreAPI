@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Validator;
 
 class ProductController extends Controller
@@ -81,11 +82,64 @@ class ProductController extends Controller
 
     public function insert(Request $request)
     {
-
+// dd($request->all());
         if (auth()->user() && auth()->user()->role_id == 1) {
-            // dd("");
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+                'price' => 'required|numeric',
+                'short_name' => 'required|string|between:2,100',
+                'number' => 'required|numeric',
+                'thumbnail' => 'required|string',
+                'slug' => 'required|string|unique:products,slug',
+                // 'slug' => ['required|string', Rule::unique('products')],
+                'description' => 'required|string',
+                'material' => 'required|string',
+                'category_id' => 'required|numeric',
+                'origin_id' => 'required|numeric',
+
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'error',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            $product = Product::create([
+                'name' => $request['name'],
+                'price' => $request['price'],
+                'short_name' => $request['short_name'],
+                'number' => $request['number'],
+                'thumbnail' => $request['thumbnail'],
+                'slug' => $request['slug'],
+                'description' => $request['description'],
+                'material' => $request['material'],
+                'category_id' => $request['category_id'],
+                'origin_id' => $request['origin_id'],
+
+            ]);
+
+            if ($product) {
+                return response()->json([
+                    'message' => 'success',
+                    'product' => $product,
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'error',
+                ], 500);
+            }
+           
+
+        }else {
+            return response()->json([
+                'message' => 'error',
+                'errors' => 'You are not admin',
+            ], 422);
+
         }
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json(['message' => 'error'], 404);
 
 
 

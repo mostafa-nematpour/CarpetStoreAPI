@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name', 'short_name', 'number', 'thumbnail',
+        'material', 'slug', 'price', 'description',
+        'discount', 'category_id', 'origin_id'
+    ];
 
     public function getRouteKeyName()
     {
