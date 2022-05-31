@@ -20,12 +20,14 @@ class ProductController extends Controller
             },
             'origin' => function ($query) {
                 $query->select('id', 'name', 'slug');
-            }
+            },
+            
         ])->when($request->has('available') && $request->available == 'true', function ($query) {
             $query->where('number', '>', 0);
         })
             ->get([
-                'id', 'short_name', 'name', 'slug', 'price', 'description', 'discount', 'category_id', 'origin_id'
+                'id', 'short_name', 'name', 'slug', 'price',
+                'description', 'discount', 'category_id', 'origin_id'
             ]);
 
         $products->makeHidden(['category_id', 'origin_id']);

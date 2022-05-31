@@ -26,4 +26,33 @@ class Product extends Model
     {
         return $this->belongsTo(Origin::class);
     }
+
+    public function getPriceAttribute($value)
+    {
+
+
+        return $this->convertEnNumbersToFa($value);
+    }
+
+    public function convertFaNumbersToEn($string) {
+        $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        $arabic = ['٩', '٨', '٧', '٦', '٥', '٤', '٣', '٢', '١','٠'];
+
+        $num = range(0, 9);
+        $convertedPersianNums = str_replace($persian, $num, $string);
+        $englishNumbersOnly = str_replace($arabic, $num, $convertedPersianNums);
+
+        return $englishNumbersOnly;
+    }
+
+
+        public function convertEnNumbersToFa($number) {
+            $num = range(0, 9);
+            $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return str_replace($num, $persian, $number);
+      
+    }
+
+    
+    
 }
