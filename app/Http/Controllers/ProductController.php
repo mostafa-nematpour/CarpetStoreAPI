@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Validator;
+// use Validator;
 
 class ProductController extends Controller
 {
@@ -50,15 +51,6 @@ class ProductController extends Controller
             }
         }
 
-        // if ($request->has('available') && $request->available == 'true') {
-        //     // dd($products);
-        //     // $products = $products->where('number', '!=', 0);
-        // }
-
-
-        // $products = Product::select('short_name', 'name', 'slug', 'price', 'description', 'discount')->get();
-
-        // $products = Product::with('category', 'origin')->get();
 
         return response()->json($products);
     }
