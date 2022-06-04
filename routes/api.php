@@ -41,7 +41,6 @@ Route::get('/category', function () {
 });
 
 
-
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
