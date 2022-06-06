@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Models\Category;
 use App\Models\Origin;
 
@@ -31,10 +32,13 @@ Route::get('/product/{product}', [ProductController::class, 'show']);
 Route::post('/add-product', [ProductController::class, 'insert']);
 Route::post('/delete-product', [ProductController::class, 'destroy']);
 
+Route::get('/cart', [CartController::class, 'index']);
+Route::post('/add-cart', [CartController::class, 'store']);
+Route::post('/delete-cart', [CartController::class, 'destroy']);
+
 Route::get('/origin', function () {
     return response()->json(Origin::all(['id', 'name']));
 });
-
 
 Route::get('/category', function () {
     return response()->json(Category::all(['id', 'name']));
