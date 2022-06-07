@@ -51,7 +51,13 @@ class CartController extends Controller
 
         foreach ($carts as $cart) {
             if ($cart->product_id == $request->product_id) {
-                $cart->number += (int) $request->number == 0 ? 1 : (int) $request->number;
+
+                if ($request->has('number')) {
+                    $cart->number = (int) $request->number;
+                } else {
+                    $cart->number += 1;
+                }
+
                 $cart->save();
                 $user->load('carts');
 
@@ -59,7 +65,6 @@ class CartController extends Controller
                     'message' => 'success',
                     'carts' =>  $user->carts->makeHidden(['created_at', 'updated_at', 'user_id'])
                 ]);
-
             }
         }
         $cart = new Cart();
