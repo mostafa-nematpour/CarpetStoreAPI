@@ -26,7 +26,7 @@ class ProductController extends Controller
             $query->where('number', '>', 0);
         })
             ->get([
-                'id', 'short_name', 'name', 'slug', 'price',
+                'id', 'short_name', 'name', 'slug', 'price', 'thumbnail',
                 'description', 'discount', 'category_id', 'origin_id'
             ]);
 
@@ -52,7 +52,6 @@ class ProductController extends Controller
                     break;
             }
         }
-
 
         return response()->json($products);
     }
@@ -88,7 +87,6 @@ class ProductController extends Controller
                 ], 422);
             }
 
-
             if (Product::destroy($request->product_id)) {
                 return response()->json([
                     'message' => 'success',
@@ -106,13 +104,14 @@ class ProductController extends Controller
 
     public function insert(Request $request)
     {
+        // dd($request->all());
         if (auth()->user() && auth()->user()->role_id == 1) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
                 'price' => 'required|numeric',
                 'short_name' => 'required|string|between:2,100',
                 'number' => 'required|numeric',
-                'thumbnail' => 'required|string',
+                'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
                 'slug' => 'required|string|unique:products,slug',
                 'description' => 'required|string',
                 'material' => 'required|string',
@@ -128,12 +127,16 @@ class ProductController extends Controller
                 ], 422);
             }
 
+            $path = $request->thumbnail->store('images');
+
+            $path= str_replace( "images/","",$path);
+
             $product = Product::create([
                 'name' => $request['name'],
                 'price' => $request['price'],
                 'short_name' => $request['short_name'],
                 'number' => $request['number'],
-                'thumbnail' => $request['thumbnail'],
+                'thumbnail' => $path,
                 'slug' => $request['slug'],
                 'description' => $request['description'],
                 'material' => $request['material'],

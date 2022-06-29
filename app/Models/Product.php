@@ -29,9 +29,11 @@ class Product extends Model
 
     public function getPriceAttribute($value)
     {
-
-
         return $this->convertEnNumbersToFa($value);
+    }
+
+    public function getThumbnailAttribute ($value){
+        return "http://images.developer-studio.ir/".$value;
     }
 
     public function convertFaNumbersToEn($string) {

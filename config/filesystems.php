@@ -32,7 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app/../../../domains/developer-studio.ir/public_html'),
             'throw' => false,
         ],
 
