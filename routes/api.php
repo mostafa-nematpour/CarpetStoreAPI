@@ -30,6 +30,7 @@ Route::get('/product/{product}', [ProductController::class, 'show']);
 
 
 Route::post('/add-product', [ProductController::class, 'insert']);
+Route::post('/update-product', [ProductController::class, 'update']);
 Route::post('/delete-product', [ProductController::class, 'destroy']);
 
 Route::get('/cart', [CartController::class, 'index']);

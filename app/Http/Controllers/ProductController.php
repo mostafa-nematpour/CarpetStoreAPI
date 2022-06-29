@@ -13,7 +13,6 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-
         $products = Product::with([
             'category' => function ($query) {
                 $query->select('id', 'name', 'slug');
@@ -21,7 +20,7 @@ class ProductController extends Controller
             'origin' => function ($query) {
                 $query->select('id', 'name', 'slug');
             },
-            
+
         ])->when($request->has('available') && $request->available == 'true', function ($query) {
             $query->where('number', '>', 0);
         })
@@ -31,8 +30,6 @@ class ProductController extends Controller
             ]);
 
         $products->makeHidden(['category_id', 'origin_id']);
-
-
 
         if ($request->has('sort')) {
             switch ($request->sort) {
@@ -55,7 +52,6 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
-
 
 
     public function show(Product $product)
@@ -129,7 +125,7 @@ class ProductController extends Controller
 
             $path = $request->thumbnail->store('images');
 
-            $path= str_replace( "images/","",$path);
+            $path = str_replace("images/", "", $path);
 
             $product = Product::create([
                 'name' => $request['name'],
@@ -163,5 +159,53 @@ class ProductController extends Controller
         }
 
         return response()->json(['message' => 'error'], 404);
+    }
+
+    public function update(Request $request)
+    {
+        if (auth()->user() && auth()->user()->role_id == 1) {
+            $validator = Validator::make($request->all(), [
+                'product_id' => 'required|numeric|exists:products,id',
+                'name' => 'string',
+                'price' => 'numeric',
+                'short_name' => 'string|between:2,100',
+                'number' => 'numeric',
+                'thumbnail' => 'image|mimes:jpeg,png,jpg|max:2048',
+                'slug' => ['string', Rule::unique('products')->ignore($request->product_id), 'alpha_dash'],
+                'description' => 'string',
+                'material' => 'string',
+                'category_id' => 'numeric',
+                'origin_id' => 'numeric',
+
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'error',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            $product = Product::find($request->product_id);
+            $product->update($request->all());
+
+            if ($product->update($request->all())) {
+                return response()->json([
+                    'message' => 'success',
+                    'product' => $product,
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'error',
+                ], 500);
+            }
+            return response()->json($product);
+
+        } else {
+
+            return response()->json([
+                'message' => 'error',
+                'errors' => 'Unauthorized',
+            ], 422);
+        }
     }
 }
